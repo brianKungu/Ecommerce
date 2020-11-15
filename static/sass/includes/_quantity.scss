@@ -1,0 +1,16 @@
+/* quantity properties */
+.quantity{
+    display:inline-block;
+}
+
+.chg-quantity{
+    width:12px;
+    cursor:pointer;
+    display:block;
+    margin-top:5px;
+    transition: .1s;
+}
+
+.chg-quantity:hover{
+    opacity: .6;
+}

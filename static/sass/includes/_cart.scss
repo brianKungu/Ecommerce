@@ -1,0 +1,25 @@
+/*cart template*/ 
+#cart-icon{
+    background-color:#fff;
+    width:35px;
+    display:inline-block;
+    margin-left:15px;
+}
+
+#cart-total{
+    display:block;
+    text-align:center;
+    color:#fff;
+    background-color:red;
+    width:20px;
+    height:25px;
+    border-radius:50px;
+    font-size:14px;
+}
+
+.cart-row{
+    display:flex;
+    align-items:flex-stretch;
+    padding-bottom:10px;
+    border-bottom:1px solid #ececec;
+}
