@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <hr>
-                <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
+                <input id="form-button" class="btn btn-warning btn-block" type="submit" value="Continue">
             </form>
             <br>
             <div class="box-element hidden" id="payment-info">
@@ -49,18 +49,40 @@
         <div class="box-element">
             <a class="btn btn-outline-dark" href="{% url 'store:cart' %}">&#x2190;Back to Cart</a>
             <hr>
+
+            <div class="table-responsive text-nowrap">
             <h3>Order Summary</h3>
 
-            <div class="cart-row">
-                <div style="flex:2"><img class="row-image" src="{% static 'images/640.png' %}"></div>
-                <div style="flex:2"><p>Product 1</p></div>
-                <div style="flex:2"><p>Ksh.2000</p></div>
-                <div style="flex:2">
-                    <p class='Quantity'>x2</p>
-                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">{{forloop.counter}}</th>
+                            <th scope="col">Item</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Total-Item-Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order_item in object.items.all %}
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>{{order_item.item.title}}</td>
+                            <td>{{order_item.item.price}}</td>
+                            <td>{{order_item.quantity}}</td>
+                            <td>
+                                {% if order_item.item.discount_price %}
+                                    Ksh.{{order_item.get_total_discount_price}}
+                                    <strong class="badge badge-warning">Saving {{order_item.get_amount_saved}}</strong>
+                                {% else %}
+                                    Ksh.{{order_item.get_total_item_price}}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-            <h5>Items:<strong></strong></h5>
-            <h5>Total:<strong>Ksh.</strong></h5>
 
         </div>
     </div>

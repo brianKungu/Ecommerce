@@ -22,7 +22,7 @@ button.button:focus {
 
 .thumbnail {
   width: 100%;
-  height: 200px;
+  height: 300px;
   -webkit-box-shadow: -1px -3px 5px -2px #d6d6d6;
   -moz-box-shadow: -1px -3px 5px -2px #d6d6d6;
   box-shadow: -1px -3px 5px -2px #d6d6d6;
@@ -33,7 +33,7 @@ button.button:focus {
 }
 
 .bg-dark {
-  background-color: #030303 !important;
+  background-color: #003859;
 }
 
 .col-lg-4, .col-lg-6, .col-lg-8, .col-lg-12 {
@@ -48,14 +48,13 @@ button.button:focus {
   width: 100px;
 }
 
-.form-field {
-  width: 250px;
-  display: inline-block;
-  padding: 5px;
-}
-
 .hidden {
   display: none !important;
+}
+
+#form-button:hover {
+  background-color: #B4E0BE;
+  border: none;
 }
 
 /* typography classes*/
@@ -97,19 +96,27 @@ button.button:focus {
 }
 
 .color-second {
-  color: #00a5c4;
+  color: #B4E0BE;
 }
 
 .color-second-bg {
-  background: #00a5c4;
+  background: #B4E0BE;
 }
 
 .color-yellow {
-  color: #ffd289;
+  color: #FFC107;
 }
 
 .color-yellow-bg {
-  background: #ffd289;
+  background: #FFC107;
+}
+
+.color-white {
+  color: #ffffff;
+}
+
+.color-white-bg {
+  background: #ffffff;
 }
 
 /*cart template*/
@@ -122,7 +129,7 @@ button.button:focus {
 
 #cart-total {
   display: block;
-  text-align: center;
+  text-align: right;
   color: #fff;
   background-color: red;
   width: 20px;
@@ -132,15 +139,29 @@ button.button:focus {
 }
 
 .cart-row {
-  display: flex;
+  display: flexbox;
   align-items: flex-stretch;
   padding-bottom: 10px;
   border-bottom: 1px solid #ececec;
+  min-width: 320px;
+  max-width: 1000px;
+}
+
+.title, .price {
+  font-family: "Baloo Thambi 2", cursive;
+  font-size: 16px;
+}
+
+.form-field {
+  width: 250px;
+  display: inline-block;
+  padding: 5px;
 }
 
 /* quantity properties */
 .quantity {
   display: inline-block;
+  width: 50%;
 }
 
 .chg-quantity {
@@ -153,4 +174,46 @@ button.button:focus {
 
 .chg-quantity:hover {
   opacity: .6;
+}
+
+/* Top sale template*/
+#top-sale .owl-carousel .item .product a {
+  overflow: hidden;
+}
+
+#top-sale .owl-carousel .item .product img {
+  transition: transform .5s ease;
+}
+
+#top-sale .owl-carousel .item .product img:hover {
+  transform: scale(1.1);
+}
+
+#top-sale .owl-carousel .owl-nav button {
+  position: absolute;
+  top: 30%;
+  outline: none;
+}
+
+#top-sale .owl-carousel .owl-nav button.owl-prev {
+  left: 0;
+}
+
+#top-sale .owl-carousel .owl-nav button.owl-prev span
+.owl-carousel .owl-nav button.owl-next span {
+  font-size: 35px;
+  margin-left: -4rem;
+  padding: 0rem;
+}
+
+#top-sale .owl-carousel .owl-nav button.owl-prev span {
+  margin-left: -4rem;
+}
+
+#top-sale .owl-carousel .owl-nav button.owl-next {
+  right: 0;
+}
+
+#top-sale .owl-carousel .owl-nav button.owl-next span {
+  margin-right: -4rem;
 }

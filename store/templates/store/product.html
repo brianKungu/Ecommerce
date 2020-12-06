@@ -1,0 +1,134 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-6">
+        <div class="box-element">
+            <div>
+                <img src="{% static 'images/640.png' %}" class="img-fluid">
+                <div class="form-row pt-4 font-size-16 font-baloo">
+                    <div class="col">
+                        <a href="{{ object.get_add_to_cart_url }}" class="btn btn-warning" style="width: 100%;">Add to cart</a>
+                    </div>
+                    <div class="col">
+                        <a href="{{ object.remove_from_cart_url }}" class="btn btn-danger"style="width: 100%;">Remove from cart</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 py-5">
+        <h5 class="font-baloo font-size-20"><strong>{{object.title}}</strong></h5>
+        <a href="" class="grey-text">
+            <h5 class="text-left">{{object.get_category_display}}</h5>
+            </a>
+        <div class="d-flex">
+            <div class="rating text-warning fon-size-12">
+                <span><i class="fas fa-star"></i></span>
+                <span><i class="fas fa-star"></i></span>
+                <span><i class="fas fa-star"></i></span>
+                <span><i class="fas fa-star"></i></span>
+                <span><i class="far fa-star"></i></span>
+            </div>
+            <a href="" class="px-2 pb-2 font-raleway font-size-14">25,000 ratings</a>
+        </div>
+
+        <hr class="m-0">
+
+        <!-- product-price -->
+        <table class="my-3">
+            <tr class="font-baloo font-size-14">
+                <td>M.R.P</td>
+                {% if object.discount_price %}
+                <td><strike>Ksh.{{object.price}}</strike></td>
+            </tr>
+
+            <tr class="font-baloo font-size-14">
+                <td>Deal Price</td>
+                <td class="text-danger font-size-20"><span>Ksh.{{object.discount_price}}</span><small class="text-dark font-size-12">&nbsp;&nbsp;inclusive of all taxes</small></td>
+            </tr>
+
+                {% else %}
+            <tr class="font-baloo font-size-14">
+                <td>Deal Price</td>
+                <td class="text-danger font-size-20"><span>Ksh.{{object.price}}</span><small class="text-dark font-size-12">&nbsp;&nbsp;inclusive of all taxes</small></td>
+            </tr>
+
+                {% endif %}
+
+
+            {% for order_item in object.title.all %}
+            <tr class="font-baloo font-size-14">
+                {% if order_item.item.discount_price %}
+                    Ksh.{{order_item.get_total_discount_price}}
+
+                <td>You save</td>
+                <td>Ksh.<span class="text-danger font-size-16">{{order_item.get_amount_saved}}</span></td>
+                {% else %}
+                    Ksh.{{order_item.get_total_item_price}}
+
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+        <!-- !end of product-price -->
+
+        <div class="d-flex">
+            <div class="return text-center mr-5">
+                <div class="font-size-20 my-2 color-second">
+                <span class="fas fa-truck border p-3 rounded-pill">
+                <a href="" class="font-baloo font-size-12">Free Delivery in 20 t0 30 min</a></span>
+                <span><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-shield-shaded" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M5.443 1.991a60.17 60.17 0 0 0-2.725.802.454.454 0 0 0-.315.366C1.87 7.056 3.1 9.9 4.567 11.773c.736.94 1.533 1.636 2.197 2.093.333.228.626.394.857.5.116.053.21.089.282.11A.73.73 0 0 0 8 14.5c.007-.001.038-.005.097-.023.072-.022.166-.058.282-.111.23-.106.525-.272.857-.5a10.197 10.197 0 0 0 2.197-2.093C12.9 9.9 14.13 7.056 13.597 3.159a.454.454 0 0 0-.315-.366c-.626-.2-1.682-.526-2.725-.802C9.491 1.71 8.51 1.5 8 1.5c-.51 0-1.49.21-2.557.491zm-.256-.966C6.23.749 7.337.5 8 .5c.662 0 1.77.249 2.813.525a61.09 61.09 0 0 1 2.772.815c.528.168.926.623 1.003 1.184.573 4.197-.756 7.307-2.367 9.365a11.191 11.191 0 0 1-2.418 2.3 6.942 6.942 0 0 1-1.007.586c-.27.124-.558.225-.796.225s-.526-.101-.796-.225a6.908 6.908 0 0 1-1.007-.586 11.192 11.192 0 0 1-2.417-2.3C2.167 10.331.839 7.221 1.412 3.024A1.454 1.454 0 0 1 2.415 1.84a61.11 61.11 0 0 1 2.772-.815z"/>
+                    <path d="M8 2.25c.909 0 3.188.685 4.254 1.022a.94.94 0 0 1 .656.773c.814 6.424-4.13 9.452-4.91 9.452V2.25z"/>
+                </svg>Pay on delivery</span>
+
+                </div>
+
+            </div>
+        </div>
+        
+    </div>  
+    <!-- product description -->
+    <div class="col-12 my-3">
+        <h6 class="font-baloo font-size-20">Product Description</h6>
+        <hr>
+        <p class="font-rubik font-size-14">{{object.description}}</p>
+    </div>
+    <!-- !product description -->
+
+    <!-- Top Sale -->
+    <section id="top-sale">
+        <div class="container py-5">
+            <h4 class="font-rubik font-size-20">Frequently Bought</h4>
+            <hr>
+            <!-- Owl carousel -->
+            <div class="owl-carousel owl-theme">
+                {% for item in object_list %}
+                    <div class="item py-2">
+                        <div class="product font-raleway">
+                            <a href=""><img src="{% static 'images/air-jordan.webp' %}" alt="product1" class="img-fluid"></a>
+                            <div class="text-center py-2">
+                                <h6>{{item.title}}</h6>
+                                <div class="rating text-warning font-size-12">
+                                    <span><i class="fas fa-star"></i></span>
+                                    <span><i class="fas fa-star"></i></span>
+                                    <span><i class="fas fa-star"></i></span>
+                                    <span><i class="fas fa-star"></i></span>
+                                    <span><i class="far fa-star"></i></span>
+                                </div>
+                                <div class="price py-2">
+                                    <span>Ksh.{{item.price}}</span>
+                                </div>
+                                <button type="submit" class="btn btn-warning">Add to cart</button>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- !Top Sale -->
+</div>
+{% endblock content %}

@@ -2,46 +2,82 @@
 {%load static%}
 {% block content %}
 <div class="row">
-    <div class="col-lg-12">
-        <div class="box-element">
-            <a class="btn btn-outline-dark" href="{% url 'store:store' %}">&#x2190; Continue Shopping</a>
+    <div class="container">
+        <div class="col-lg-12">
+            <div class="box-element">
+                {% if object.get_total%}
+                    <a class="btn btn-outline-dark" href="{% url 'store:store' %}">&#x2190; Continue Shopping</a>
+                    <a style="float: right; margin: 5px;" class="btn btn-warning" href="{% url 'store:checkout' %}">Proceed to Checkout</a>
+                    <br>
+                    <hr>
+                    <span><h5 class="float-right">Total:<strong>Ksh.{{object.get_total}}</strong></h5></span>
+                {% endif %}
+                <br>
+                <br>
+                    {% for order_item in object.items.all %}
+
+                
+            </div>
             <br>
-            <br>
-            <table class="table">
-                <tr>
-                    <th><h5>Items:<strong>3</strong></h5></th>
-                    <th><h5>Total:<strong>Ksh.2000</strong></h5></th>
-                    <th>
-                        <a style="float: right; margin: 5px;" class="btn btn-success" href="{% url 'store:checkout' %}">Checkout</a>
-                    </th>
-                </tr>
-            </table>
             
-        </div>
-        <br>
-        <div class="box-element">
-            <div class="cart-row">
-                <div style="flex:2"></div>
-                <div style="flex:2"><strong>Item</strong></div>
-                <div style="flex:1"><strong>Price</strong></div>
-                <div style="flex:2"><strong>Quantity</strong></div>
-                <div style="flex:1"><strong>Total</strong></div>
-            </div>
+            <div class="box-element">
+                <div class="cart-row d-flex container-fluid">
+                    <!-- <div class="mobile" style="flex:1"></div>
+                    <div class="mobile" style="flex:1"></div>-->
+                    <div class="desktop" style="flex:1"></div>
+                    <div style="flex:2"><strong>Item</strong></div>
+                    <div class="mobile" style="flex:2"><strong>Price</strong></div>
+                    <div style="flex:2.5"><strong>Quantity</strong></div>
+                    <div style="flex:2"><strong>Total Item Price</strong></div>
+                    <div class="desktop" style="flex:1"></div>
 
-            <div class="cart-row">
-                <div style="flex:2"><img class="row-image" src="{% static 'images/640.png' %}"></div>
-                <div style="flex:2"><p>Product 1</p></div>
-                <div style="flex:1"><p>Ksh.2000</p></div>
-                <div style="flex:2">
-                    <p class='Quantity'>2</p>
-                    <div class="quantity">
-                        <button class="qty-up border bg-light chg-quantity"><i class="fas fa-chevron-up"></i></button>
-                        <button class="qty-up border bg-light chg-quantity"><i class="fas fa-chevron-down"></i></button>
-                    </div>
                 </div>
-                <div style="flex: 1;"><p>Ksh.2000</p></div>
-            </div>
 
+                <div class="cart-row d-flex container-fluid">
+                        <div class="mobile" style="flex:1"><h5><strong>{{forloop.counter}}</strong></h5></div>
+                        <!-- <div class="mobile"style="flex:1"><img class="row-image" src="{% static 'images/640.png' %}"></div> -->
+                        <div style="flex:2" class="title"><p>{{order_item.item.title}}</p></div>
+                        <div class="mobile" style="flex:2"><p>{{order_item.item.price}}</p></div>
+                        <div style="flex:2.5">
+                            <div class="form-field">
+                                <table>
+                                    <td>
+                                        <a href="{% url 'store:remove_single_item_from_cart' order_item.item.slug%}"><i class="fas fa-chevron-down pr-3"></i></a>
+                                        {{order_item.quantity}}
+                                        <a href="{% url 'store:add_to_cart' order_item.item.slug%}"><i class="fas fa-chevron-up pl-3"></i></a>
+                                    </td>
+                                </table>
+                                <!-- <input class="quantity" disabled value="{{order_item.quantity}}"><i class="fas fa-chevron-up"></i> -->
+                            </div> 
+                        </div>
+                    
+                    <div style="flex: 2;" class="price">
+                        {% if order_item.item.discount_price %}
+                            Ksh.{{order_item.get_total_discount_price}}
+                            <div><strong class="badge badge-warning">Saving {{order_item.get_amount_saved}}</strong></div>
+                        {% else %}
+                            Ksh.{{order_item.get_total_item_price}}
+                        {% endif %}
+                    </div>
+                    <div">
+                        <a href="{% url 'store:remove_from_cart' order_item.item.slug %}"><i style="float: right;color: red;" class="fas fa-trash"></i></a>
+                    </div>
+                    
+                    <div>
+                    {% empty %}
+                    <div class="row">
+                        <!-- <div class="col-md-3"></div> -->
+                        <div class="col-md-12">
+                            <a class="btn btn-outline-dark" href="{% url 'store:store' %}">&#x2190; Continue Shopping</a>
+                            <a style="float: right;color: black;" class="px-5 font-baloo color-secondary-bg">Your cart is empty.</a>
+                            
+                        </div>
+                        <!-- <div class="col-md-3"></div> -->
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
         </div>
     </div>
 </div>

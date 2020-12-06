@@ -8,7 +8,7 @@
 
 #cart-total{
     display:block;
-    text-align:center;
+    text-align:right;
     color:#fff;
     background-color:red;
     width:20px;
@@ -18,8 +18,43 @@
 }
 
 .cart-row{
-    display:flex;
+    display:flexbox;
     align-items:flex-stretch;
     padding-bottom:10px;
     border-bottom:1px solid #ececec;
+    min-width: 320px;
+    max-width: 1000px;
 }
+
+.title , .price{
+    font-family: $font-baloo;
+    font-size: 16px;
+
+    // @media screen{
+    //     font-size: 14px;
+    //     padding-right: 85px;
+        
+    // }
+}
+
+.form-field{
+    width:250px;
+    display:inline-block;
+    padding:5px;
+
+    // @media screen {
+    //     padding-left: 40px;
+    // }
+}
+
+// Cart template responsive rules
+// @media (max-width:767px){
+//     .cart-row .mobile {
+//         display: none;
+
+//     }
+
+//     .cart-row .desktop{
+//         display: inline-block;
+//     }
+// }

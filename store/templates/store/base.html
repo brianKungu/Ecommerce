@@ -1,43 +1,118 @@
 <!DOCTYPE html>
-
+{% load cart_template_tags %}
 {% load static %}
 <html lang="en">
 <head>
-    <title>Ecom</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" charset="UTF-8">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" charset="UTF-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>{% block head_title %}{% endblock %}</title>
+  {% block extra_head %}
+  {% endblock %}
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <!-- owl carousel CDN-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha256-UhQQ4fxEeABh4JrcmAJ1+16id/1dnlOEVCFOxDef9Lw=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha256-kksNxjDRxd/5+jGurZUJd1sdR2v+ClrCl3svESBaJqw=" crossorigin="anonymous" />
+
+  <!-- font awesome icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
     
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand font-rubic" href="{% url 'store:store' %}">Ecom</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link font-rubik" href="{% url 'store:store' %}">Store <span class="sr-only">(current)</span></a>
-            </li>
-            
-          </ul>
-            <div class="form-inline my-2 my-lg-0">
-                <a href="#" class="btn btn-warning">Login</a>
-                <a href="{% url 'store:cart' %}">
-                    <img id="cart-icon" src="{% static 'images/cart.svg' %}">
-                </a>
-                <p id="cart-total">0</p>
-            </div>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
+      <a class="navbar-brand font-rubic" href="{% url 'store:store' %}">Ecom</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav m-auto font-rubik">
+          {% for category in object_list %}
+          <li class="nav-item active">
+            <a class="nav-link" href="#">{{category.get_category_display}} <span class="sr-only">(current)</span></a>
+          </li>
+          {% endfor %}
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="#">Category</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Products <i class="fas fa-chevron-down"></i></a>
+              
+          <li>
+          <li class="nav-item">
+              <a class="nav-link" href="#">Blog</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="#">Category <i class="fas fa-chevron-down"></i></a>
+          </li> -->
+          
+        </ul>
+
+          <div class="form-inline my-2 my-lg-0">
+            {% if request.user.is_authenticated %}
+
+              <a class="nav-link waves-effect" href="{% url 'store:cart' %}">
+                <i class="fas fa-shopping-cart color-yellow"></i>
+                <span class="clear-fx d-none d-sm-inline-block color-yellow">Cart</span>
+                <span class="badge red z-depth mr-1 color-yellow">{{ request.user|cart_item_count }}</span>
+              </a>
+              <a class="nav-link waves-effect" href="{% url 'account_logout' %}">
+                <span class="clear-fx d-none d-sm-inline-block color-white">Logout</span>
+              </a>
+            {% else %}
+          
+              <a class="nav-link waves-effect" href="{% url 'account_login' %}">
+                <span class="clear-fx d-none d-sm-inline-block color-white">Login</span>
+              </a>
+              <a class="nav-link waves-effect" href="{% url 'account_signup' %}">
+                <span class="clear-fx d-none d-sm-inline-block color-white">Signup</span>
+              </a>
+
+            {% endif %}
+          </div>
+      </div>
+
+      
+  </nav>
+
+  <div class="pt-1">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+          {{message}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-      </nav>
-  <div class="container">
-      <br>
-      {% block content %}
-      {% endblock content %}
+      {% endfor %}
+    {% endif %}
   </div>
+
+  <div class="container">
+    <br>
+    {% block content %}
+    {% endblock content %}
+
+
+    {% block extra_body %}
+    {% endblock %}
+  </div>
+
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+  <!-- owl carousel js-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha256-pTxD+DSzIwmwhOqTFN+DB+nHjO4iAsbgfyFq5K5bcE0=" crossorigin="anonymous"></script>
+  <script src="{% static 'js/index.js' %}"></script>
+
 
 </body>
 </html>
+
+<!-- python manage.py sass static/sass/style.scss static/css/style.css --watch -->
+
+
