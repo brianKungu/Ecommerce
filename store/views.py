@@ -6,6 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Item, OrderItem ,Order
+from .forms import CheckoutForm
 # Create your views here.
 
 class StoreView(ListView):
@@ -39,9 +40,24 @@ def cart(request):
     context={}
     return render(request, 'store/cart.html', context)
 
-def checkout(request):
-    context={}
-    return render(request, 'store/checkout.html', context)
+class CheckoutView(View):
+    def get(self, *args, **kwargs):
+        form = CheckoutForm()
+        template_name = 'store/checkout.html'
+        context = {
+            'form': form
+        }
+        return render(self.request, template_name , context)
+
+    def post(self, *args, **kwargs):
+        form = CheckoutForm(self.request.POST or None)
+        print(self.request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+            print("The form is valid")
+            return redirect('store:checkout')
+        messages.warning(self.request, "Failed checkout")
+        return redirect('store:checkout')
 
 @login_required
 def add_to_cart(request, slug):

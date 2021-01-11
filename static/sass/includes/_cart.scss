@@ -48,13 +48,13 @@
 }
 
 // Cart template responsive rules
-// @media (max-width:767px){
-//     .cart-row .mobile {
-//         display: none;
+@media (max-width:767px){
+    .cart-row .mobile {
+        display: none;
 
-//     }
+    }
 
-//     .cart-row .desktop{
-//         display: inline-block;
-//     }
-// }
+    .cart-row .desktop{
+        display: inline-block;
+    }
+}

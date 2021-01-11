@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'store',
     'sass_processor',
     'django_sass',
+    'django_countries',
 ]
 
 MIDDLEWARE = [
@@ -148,4 +149,4 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1
 LOGIN_REDIRECT_URL='/'
 # crispy forms
-CRISPY_TEMPLATE_PACK = 'bootstrap4.5'
+CRISPY_ALLOWED_TEMPLATE_PACKS = ('bootstrap', 'uni_form', 'bootstrap4.5', 'foundation-5')

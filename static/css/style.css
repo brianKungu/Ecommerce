@@ -158,6 +158,15 @@ button.button:focus {
   padding: 5px;
 }
 
+@media (max-width: 767px) {
+  .cart-row .mobile {
+    display: none;
+  }
+  .cart-row .desktop {
+    display: inline-block;
+  }
+}
+
 /* quantity properties */
 .quantity {
   display: inline-block;
