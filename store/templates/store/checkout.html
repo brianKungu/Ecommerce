@@ -4,15 +4,15 @@
 {% block content %}
 <div class="row">
      <div class="col-lg-6">
-       <div class="box-element mb-4" id="form-wrapper">
+       {% comment %} <div class="box-element mb-4" id="form-wrapper">
         
             <form class="state">
                 {% csrf_token %}
                 {{form|crispy}}
-                <button class="btn btn-warning mb-5">Checkout</button>
+                <button class="btn btn-warning mb-5" type"submit">Checkout</button>
             </form>
-        </div> 
-        
+        </div>  {% endcomment %}
+         
         <div class="box-element" id="form-wrapper">
             <form method="POST" action="" id="form">
                 {% comment %} <div id="user-info">
@@ -51,29 +51,31 @@
                         </div>
                     </div>
 
-                    <div class="form-field mt-0">
+                    <div class="form-field">
                         <label for="zip" id="zip" class="font-rubik font-size-14">Zip Code</label>
                         {% comment %} <input class="form-control" type="text" name="zipcode" placeholder="Zip Code.."> {% endcomment %}
                         {{form.zip}}
+                        {% if empty %}
                         <div class="invalid-feedback">
                             Please select a valid country
                         </div>
+                        {% endif %}
                     </div>
 
                     <div class="form-field form-check d-block pl-4">
-                        <input {% if form.same_billing_address.value %} checked {% endif %} type="checkbox" class="form-check-input">
-                        <label class="form-check-label font-rubik font-size-14" for="same-address">Shipping address same as my billing address</label>
+                        <input {% if form.same_shipping_address.value %} checked {% endif %} name="same_billing_address" type="checkbox" class="form-check-input">
+                        <label class="form-check-label font-rubik font-size-14" for="same_billing_address">Shipping address same as my billing address</label>
                     </div>
 
                     <div class="form-field form-check pl-4">
-                        <input {% if form.save_info.value %}{% endif %} type="checkbox" class="form-check-input">
-                        <label class="form-check-label font-rubik font-size-14"  for="save-info">Save this info for next time.</label>
+                        <input {% if form.save_info.value %}{% endif %} name="save_info" type="checkbox" class="form-check-input">
+                        <label class="form-check-label font-rubik font-size-14"  for="save_info">Save this info for next time.</label>
                     </div>
 
                     <div class="custom-control custom-radio form-field form-check pl-4">
-                        {% for value, name in forms.fields.payment_option.choices %}
+                        {% for value, name in form.fields.payment_option.choices %}
                             <input id="{{name}}" type="radio" name="payment_option" value="{{value}}" class="form-check-input">
-                            <label class="form-check-label font-rubik font-size-14" for="{{name}}">{{name}}</label>
+                            <label class="form-check-label font-rubik font-size-14 mr-4" for="{{name}}">{{name}}</label>
                         {% endfor %}
                     </div>
     
