@@ -78,25 +78,37 @@ class CheckoutView(View):
                 order.billing_address = billing_address
                 order.save()
                 # TODO: add redirect to the selected payment option
-                return redirect('store:checkout')
-            messages.warning(self.request, "Failed checkout")
-            return redirect('store:checkout')
-
+                
+                if payment_option == 'S':
+                    return redirect('store:payment', payment_option="stripe")
+                elif payment_option == 'P':
+                    return redirect('store:payment', payment_option='paypal')
+                else:
+                    messages.warning(self.request, " Invalid payment option")
+                    return redirect("store:checkout")
+            
         except ObjectDoesNotExist:
             messages.error(self.request, "You do not have an active order")
             return redirect('store:checkout')
         
 class Payment(View):
+    def payment(self,request):
+        publishkey = settings.STRIPE_PUBLISHABLE_KEY
+        print(request.user.userStripe.stripe_id)
     def get(self, *args, **kwargs):
+        order = Order.objects.get(user=self.request.user, ordered=False)
+        context = {
+            'order':order
+        }
         template_name = 'store/payment.html'
-        return render(self.request, template_name)
+        return render(self.request, template_name, context)
     
     def post(self, *args, **kwargs):
         order = Order.objects.get(user=self.request.user, ordered=False)
         token = self.request.POST.get('stripToken')
-        amount = order.get_total() *100
+        amount = int(order.get_total() *100)
         
-        
+    
         try:
             charge=stripe.Charge.create(
                 amount = amount, #cents
@@ -107,7 +119,7 @@ class Payment(View):
             payment = Payment()
             payment.stripe_charge_id = charge['id']
             payment.user = self.request.user
-            payment.amount = amount
+            payment.amount = order.get_total()
             payment.save()
         
          

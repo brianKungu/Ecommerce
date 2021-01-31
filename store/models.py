@@ -3,6 +3,9 @@ from django.db import models
 from django.shortcuts import reverse
 from django_countries.fields import CountryField
 
+
+import stripe
+stripe.api_key = settings.STRIPE_SECRET_KEY
 # Create your models here.
 
 CATEGORY_CHOICE=(
@@ -100,7 +103,19 @@ class BillingAddress(models.Model):
     zip =models.CharField(max_length=100) 
     def __str__(self):
         return self.user.username
-    
+   
+   
+class userStripe(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL)
+    stripe_id = models.CharField(max_length=200, null=True, blank=True)
+
+    def __unicode__(self):
+        if self.stripe_id:
+            return str(self.stripe_id)
+        else:
+            return self.user.username 
+        
+ 
 class Payment(models.Model):
      stripe_charge_id = models.CharField(max_length=50)
      user=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
@@ -110,3 +125,4 @@ class Payment(models.Model):
      def __str__(self):
          return self.user.username
      
+    
